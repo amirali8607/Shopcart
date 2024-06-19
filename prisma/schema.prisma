@@ -1,0 +1,43 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+model User {
+  id        String     @id @default(cuid())
+  name      String?
+  email     String     @unique
+  password  String?
+  role      UserRole   @default(USER)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  shopitems Shopitem[]
+}
+
+model Card {
+  id     String     @id @default(cuid())
+  title  String     @unique
+  image  String?
+  body   String     @db.Text
+  price  String
+  amount String
+  items  Shopitem[]
+}
+
+model Shopitem {
+  id       String @id @default(cuid())
+  amount   String
+  userId   String
+  cardId   String
+  carditem Card   @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  user     User   @relation(fields: [userId], references: [id])
+}

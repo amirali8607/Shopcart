@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE `card` MODIFY `price` VARCHAR(191) NOT NULL,
+    MODIFY `amount` VARCHAR(191) NOT NULL;
